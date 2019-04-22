@@ -1,0 +1,81 @@
+[
+ {"class": "com.cherkavi.productconfig.cd.deployer.step.WebLogicUndeploy",
+  "parameters": {
+     "app_name":"fixnet-gui-%(branch)%"
+    ,"wl_host" :"vldn265:7001"
+    ,"wl_login":"weblogic"
+    ,"wl_passw":"weblogic1"    
+  }
+ }
+
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.ExecuteBashScript",
+  "parameters": {
+    "command_line":"rm -rf /dev/shm/fixnet-jenkins/deployer-data/%(branch)%/"
+  }
+}
+
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.ExecuteBashScript",
+  "parameters": {
+    "command_line":"mkdir -p /dev/shm/fixnet-jenkins/deployer-data/%(branch)%/"
+  }
+}
+
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.DeployingRecord",
+  "parameters": {
+    "status-holder.url":"http://10.32.143.83:8030/status"
+  }
+}
+
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.MoveFile",
+  "parameters": {
+     "uploader.folder":"/dev/shm/fixnet-jenkins/uploader-temp"
+    ,"storage.location":"/dev/shm/fixnet-jenkins/deployer-data"
+    ,"artifact.extension":"war"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.JarExtractor",
+  "parameters": {
+     "array_of_path":[
+       "/WEB-INF/lib/fixnet-persistence-*.jar/db/migration/2018.01.04.00/ddl"
+      ,"/WEB-INF/lib/fixnet-persistence-*.jar/db/migration/2018.01.04.00/dml"
+      ,"/WEB-INF/lib/fixnet-persistence-*.jar/db/migration/fixnet/2018.02.00.00/ddl"
+      ,"/WEB-INF/lib/fixnet-persistence-*.jar/db/migration/fixnet/2018.02.00.00/dml"
+      ,"/WEB-INF/lib/fixnet-persistence-*.jar/db/migration/fixnet/2018.02.00.00/post_ddl"
+      ,"/WEB-INF/lib/fixnet-persistence-*.jar/db/migration/fixnet/2018.02.00.00/dev"
+    ]
+    ,"jar_files_extracted":"/dev/shm/fixnet-jenkins/deployer-data/%(branch)%/db_migration"
+  }
+}
+
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.ExecuteBashScript",
+  "parameters": {
+    "command_line":"/dev/shm/fixnet-jenkins/flyway/scripts/flyway clean -driver=oracle.jdbc.OracleDriver -url=jdbc:oracle:thin:@vspn050.kabeldeutschland.de:1523:PMDR -user=fixnet -password=fixnet"
+  }
+}
+
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.ExecuteBashScript",
+  "parameters": {
+    "command_line":"/dev/shm/fixnet-jenkins/flyway/scripts/flyway migrate -driver=oracle.jdbc.OracleDriver -url=jdbc:oracle:thin:@vspn050.kabeldeutschland.de:1523:PMDR -user=fixnet -password=fixnet -locations=filesystem:/dev/shm/fixnet-jenkins/deployer-data/%(branch)%/db_migration"
+  }
+}
+
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.WebLogicDeploy",
+  "parameters": {
+     "app_name":"fixnet-gui-%(branch)%"
+    ,"wl_host" :"vldn265:7001"
+    ,"wl_login":"weblogic"
+    ,"wl_passw":"weblogic1"    
+    ,"war_path_on_remote_host":"%(executable_jar)%"
+  }
+ }
+
+
+
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.StartingRecord",
+  "parameters": {
+    "status-holder.url":"http://10.32.143.83:8030/status"
+  }
+}
+
+]
+ 

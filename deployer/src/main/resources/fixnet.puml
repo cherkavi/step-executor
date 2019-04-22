@@ -1,0 +1,30 @@
+@startuml
+start;
+:undeploy app;
+    note
+        WebLogic
+    end note
+:clean up;
+    note right
+        previous installations
+    end note
+:move war from 'uploader';
+:unpack DB scripts;
+    note right
+        from existing war
+    end note
+:clean <b>DB</b>;
+    note
+        flyway
+    end note
+:install <b>DB</b>;
+    note
+        flyway
+    end note
+:copy war to WebLogic node;
+:deploy app;
+    note
+        WebLogic
+    end note
+end;
+@enduml

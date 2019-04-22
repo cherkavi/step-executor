@@ -1,0 +1,66 @@
+---
+# create directory structure
+# create scripts
+# copy artifacts
+- hosts: jenkins-deployment
+  gather_facts: True
+  become: no
+
+  tasks:
+    - name: folders for each component
+      file: state=directory mode=777 path="{{ root_folder }}/{{ item }}"
+      loop:
+        - uploader
+        - status-holder
+        - status-holder-db
+        - monitor
+        - deployer
+        - uploader-temp
+        - deployer-data
+
+    - name: scripts start for all applications
+      template: mode=0777 src="templates/{{ item }}/start.sh" dest="{{ root_folder }}/{{ item }}/start.sh"
+      loop:
+        - uploader
+        - status-holder
+        - status-holder-db
+        - monitor
+        - deployer
+
+    - name: deployer steps
+      template:
+        mode: 0666 
+        src: "templates/deployer/{{ deployer_template_name }}-steps.json"
+        dest: "{{ root_folder }}/deployer/steps.json"
+
+    - name: deployer fail steps
+      template:
+        mode: 0666
+        src: "templates/deployer/{{ deployer_template_name }}-failSteps.json"
+        dest: "{{ root_folder }}/deployer/failSteps.json"
+
+    - name: scripts "start-all, stop-all, status"
+      template:
+        mode: 0777 
+        src: "templates/{{ item }}" 
+        dest: "{{ root_folder }}/{{ item }}" 
+      loop:
+        - "start-all.sh"
+        - "status.sh"
+        - "stop-all.sh"
+
+    - name: copy artifacts ( should be built already )
+      copy:
+        src: "jars/{{item}}.jar"
+        dest: "{{ root_folder }}/{{ item }}/{{ item }}.jar" 
+      loop:
+        - deployer
+        - uploader
+        - monitor
+        - status-holder
+
+    - name: copy h2
+      copy:
+        src: "jars/h2-1.4.192.jar"
+        dest: "{{ root_folder }}/status-holder-db/h2-1.4.192.jar" 
+

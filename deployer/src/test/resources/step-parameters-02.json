@@ -1,0 +1,8 @@
+[
+{"class": "com.cherkavi.productconfig.cd.deployer.step.FailRecord",
+  "parameters": {
+    "status-holder.url":"http://vldn337:8030/status"
+  }
+}
+]
+

@@ -1,0 +1,54 @@
+[
+ {"class": "com.cherkavi.productconfig.cd.deployer.step.ProcessKiller",
+  "parameters": {
+     "storage.location":"{{ root_folder }}/deployer-data"
+    ,"pid-file-name":"opm-gui.pid"
+  }
+ }
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.RemovePreviousRecord",
+  "parameters": {
+    "status-holder.url":"http://{{inventory_hostname}}:{{port_status_holder}}/status"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.DeployingRecord",
+  "parameters": {
+    "status-holder.url":"http://{{inventory_hostname}}:{{port_status_holder}}/status"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.MoveFile",
+  "parameters": {
+     "uploader.folder":"{{ root_folder }}/uploader-temp"
+    ,"storage.location":"{{ root_folder }}/deployer-data"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.FreePortFinder",
+  "parameters": {
+     "low":9000
+    ,"high":9999
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.FreeSshdPortFinder",
+  "parameters": {
+     "low":10000
+    ,"high":19999
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.ExecuteProcess",
+  "parameters": {
+     "exec-commandline":"java -Dspring.profiles.active=h2 -Dsshd.shell.port=%s -Dserver.port=%s -jar %s"
+    ,"storage.location":"{{ root_folder }}/deployer-data"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.StartingRecord",
+  "parameters": {
+    "status-holder.url":"http://{{inventory_hostname}}:{{port_status_holder}}/status"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.SpringBootAdminNotifier",
+  "parameters": {
+     "springbootadmin.url":"{{ spring_boot_admin }}"
+    ,"springbootadmin.currentServer":"http://{{inventory_hostname}}"
+  }
+}
+]
+

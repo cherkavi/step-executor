@@ -1,0 +1,25 @@
+@startuml
+start
+if ( process exists ? ) then (yes)
+    :kill process;
+    note left
+        <b>opm-gui.pid</b>
+        by branch folder
+    end note
+else (no)
+endif
+:move file from 'uploader';
+:find free port;
+note right
+    will be used
+    as HTTP port
+end note
+:find free port;
+note left
+    will be used
+    as SSHD port
+end note
+:start new application;
+:notify admin console;
+end
+@enduml

@@ -1,0 +1,59 @@
+[
+ {"class": "com.cherkavi.productconfig.cd.deployer.step.ProcessKiller",
+  "parameters": {
+     "storage.location":"C:\\temp\\deployer"
+    ,"pid-file-name":"opm-gui.pid"
+  }
+ }
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.RemovePreviousRecord",
+  "parameters": {
+    "status-holder.url":"http://vldn337:8030/status"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.DeployingRecord",
+  "parameters": {
+    "status-holder.url":"http://vldn337:8030/status"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.MoveFile",
+  "parameters": {
+     "uploader.folder":"C:\\temp\\uploader"
+    ,"storage.location":"C:\\temp\\deployer"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.FreePortFinder",
+  "parameters": {
+     "low":9000
+    ,"high":9999
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.FreeSshdPortFinder",
+  "parameters": {
+     "low":10000
+    ,"high":19999
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.ExecuteProcess",
+  "parameters": {
+     "exec-commandline":"java -Dspring.profiles.active=h2 -Dsshd.shell.port=%s -Dserver.port=%s -jar %s"
+    ,"storage.location":"C:\\temp\\deployer"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.StartingRecord",
+  "parameters": {
+    "status-holder.url":"http://vldn337:8030/status"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.SpringBootAdminNotifier",
+  "parameters": {
+     "springbootadmin.url":"http://vldn338:8001"
+    ,"springbootadmin.currentServer":"http://vldn337"
+  }
+}
+,{"class": "com.cherkavi.productconfig.cd.deployer.step.JarExtractor",
+  "parameters": {
+    "array_of_path":["/WEB-INF/lib/fixnet-persistence-*.jar/db/migration/2018.01.04.00/ddl", "/WEB-INF/lib/fixnet-persistence-*.jar/db/migration/2018.01.04.00/dml", "/WEB-INF/lib/fixnet-persistence-*.jar/db/migration/fixnet/2018.02.00.00/ddl"]
+  }
+}
+]
+

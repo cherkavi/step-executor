@@ -1,0 +1,8 @@
+[
+{"class": "com.cherkavi.productconfig.cd.deployer.step.FailRecord",
+  "parameters": {
+    "status-holder.url":"http://{{inventory_hostname}}:{{port_status_holder}}/status"
+  }
+}
+]
+

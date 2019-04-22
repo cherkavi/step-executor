@@ -1,0 +1,9 @@
+    root_folder: "/dev/shm/fixnet-jenkins"
+    port_deployer: 8040
+    port_monitor: 8050
+    port_uploader: 8010
+    port_status_holder: 8030
+    port_status_holder_db_web: 8021
+    port_status_holder_db_jdbc: 8020
+    spring_boot_admin: "http://vldn338:8001"
+    deployer_template_name: "fixnet"
